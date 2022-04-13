@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: ../e-2-3/frontend/.
+    ports:
+      - 3000:3000
+  backend:
+    build: ../e-2-3/backend/.
+    ports:
+      - 3001:3001
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE=db
+  redis:
+    image: redis:6
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=user
+      - POSTGRES_DB=db
