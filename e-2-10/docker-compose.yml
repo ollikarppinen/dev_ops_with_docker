@@ -2,9 +2,9 @@ version: "3.8"
 
 services:
   frontend:
-    build: ../e-2-3/frontend/.
+    build: ./frontend/.
   backend:
-    build: ../e-2-3/backend/.
+    build: ./backend/.
     environment:
       - REDIS_HOST=redis
       - POSTGRES_HOST=postgres
