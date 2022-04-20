@@ -6,7 +6,7 @@ RUN apk --no-cache add git \
 WORKDIR /go/material-applications/example-backend
 
 RUN go build
-RUN chmod a+x ./server && useradd -m appuser
+RUN chmod a+x ./server && adduser -D appuser
 
 USER appuser
 

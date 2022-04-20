@@ -9,7 +9,7 @@ ENV REACT_APP_BACKEND_URL http://localhost/api
 
 RUN npm install -ci && npm run build && npm install -g serve
 
-RUN chmod a+x ./build && useradd -m appuser
+RUN chmod a+x ./build && adduser -D appuser
 USER appuser
 
-CMD ["serve -s -l 3000 build"]
+CMD ["serve", "-s", "-p", "3000", "build"]
