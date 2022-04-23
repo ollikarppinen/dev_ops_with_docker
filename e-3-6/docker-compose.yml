@@ -2,9 +2,9 @@ version: "3.8"
 
 services:
   frontend:
-    build: .
+    build: ./frontend/.
   backend:
-    build: ../e-3-4/backend/.
+    build: ./backend/.
     environment:
       - REDIS_HOST=redis
       - POSTGRES_HOST=postgres
@@ -24,4 +24,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - ../e-3-4/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
