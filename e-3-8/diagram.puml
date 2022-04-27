@@ -1,0 +1,68 @@
+@startuml kubernetes-diagram
+
+rectangle "local machine" {
+  rectangle kubectl
+  rectangle browser
+}
+
+rectangle "cluster" {
+  rectangle "managed load balancer" as lb
+  database "managed db" as db
+  rectangle "backend [service]" as s1
+  rectangle "frontend [service]" as s2
+  rectangle "backend [deployment]" as d1 {
+    cloud rs1 #pink;line:red;line.bold;text:red [
+      replica set
+    ]
+    rectangle "node 1" as n1 {
+      rectangle "backend-1 [pod]" as p1 {
+        rectangle "backend-1/backend [container]" as be1
+        rectangle "backend-1/db proxy [container]" as dbp1
+        rectangle "backend-1/nginx [container]" as nginx1
+      }
+      rectangle "backend-2 [pod]" as p2 {
+        rectangle "backend-2/backend [container]" as be2
+        rectangle "backend-2/db proxy [container]" as dbp2
+        rectangle "backend-2/nginx [container]" as nginx2
+      }
+    }
+  }
+  rectangle "frontend [deployment]" as d2 {
+    cloud rs2 #pink;line:red;line.bold;text:red [
+      replica set
+    ]
+    rectangle "node 1" as n2 {
+      rectangle "frontend-1 [pod]" as p3 {
+        rectangle "frontend-1/frontend [container]" as fe1
+      }
+    }
+  }
+  rectangle "master node" as mn
+}
+
+rs1 --> p1 #line:red;line.bold;text:red
+rs1 --> p2 #line:red;line.bold;text:red
+rs2 --> p3 #line:red;line.bold;text:red
+
+s1 --> p1 #line:blue;line.bold;text:red
+s1 --> p2 #line:blue;line.bold;text:red
+s2 --> p3 #line:blue;line.bold;text:red
+
+kubectl --> mn #green;line.bold;text:green : " kubernetes\n instructions"
+mn --> n1 #green;line.bold;text:green
+mn --> n2 #green;line.bold;text:green
+
+browser --> lb : HTTP request
+lb --> s1
+lb --> s2
+s2 --> fe1
+s1 --> nginx1
+s1 --> nginx2
+nginx1 --> be1
+nginx2 --> be2
+be1 --> dbp1
+be2 --> dbp2
+dbp1 --> db
+dbp2 --> db
+
+@enduml
